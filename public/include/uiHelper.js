@@ -487,18 +487,10 @@ const uiHelper = (function() {
       });
     },
     _initAccount: function() {
+      // The Discord name is now read only: it comes from the account that was
+      // signed in with, so there is nothing to submit here.
       self.elements.txtDiscordName.keydown(function(evt) {
-        if (evt.key === 'Enter' || evt.which === 13) {
-          self.handleDiscordNameSet();
-        }
         evt.stopPropagation();
-      });
-      $('#btnDiscordNameSet').click(() => {
-        self.handleDiscordNameSet();
-      });
-      $('#btnDiscordNameRemove').click(() => {
-        self.setDiscordName('');
-        self.handleDiscordNameSet();
       });
     },
     initBanner(textList) {
@@ -655,56 +647,6 @@ const uiHelper = (function() {
         self._bannerIntervalTick();
       }
     },
-    handleDiscordNameSet() {
-      let name = self.elements.txtDiscordName.val();
-
-      if (name === null || name === undefined) {
-        self.setDiscordName('');
-        return self.handleDiscordNameSet();
-      } else if (typeof name !== 'string') return modal.showText(__('Discord name must be a string.') + '\n' + __('Wait, what - how did this happened?'));
-
-      name = name.trim();
-      self.setDiscordName(name);
-
-      // TODO: server-side real Discord username validation
-      // Discord username regex: ^[a-z0-9_\.]{2,32}$
-      // Discord display name regex: ^.{1,32}$
-      // Currently allowing both
-
-      if (name.length > 32) modal.showText(__('Discord name is not valid.'));
-      else {
-        $.post({
-          type: 'POST',
-          url: '/setDiscordName',
-          data: {
-            discordName: name
-          },
-          success: function() {
-            modal.showText(name.length > 0 ? __('Discord name updated successfully') : __('Discord name reset successfully'));
-          },
-          error: function(data) {
-            const err = data.responseJSON && data.responseJSON.details ? data.responseJSON.details : data.responseText;
-
-            if (data.status === 200) modal.showText(err); // Seems to be caused when response body isn't json? Hope that the server sent good enough details.
-            else if (/(<h1>(.*)<\/h1>)/.test(err) && /<p>(.*)<\/p>/.test(err)) {
-              modal.show(modal.buildDom(
-                crel('h2', { class: 'modal-title' }, __('Error') + ' ' + data.status),
-                crel('div',
-                  crel('h3', { style: 'margin: 0; text-align: center;' }, __('Couldn\'t change discord name: ').trim()),
-                  crel('h4', { style: 'text-align: center;' }, err.match(/<h1>(.*)<\/h1>/)[1]),
-                  crel('p', { style: 'margin: 0;' }, err.match(/<p>(.*)<\/p>/)[1])
-                ),
-                crel('p', { style: 'margin: 0; font-style: normal; text-align: left;' }, data.status + ': ' + data.statusText)
-              ));
-            } else {
-              modal.showText(__('Couldn\'t change discord name: ') + err, {
-                title: __('Error') + ' ' + data.status
-              });
-            }
-          }
-        });
-      }
-    },
     updateAudio: function(url) {
       try {
         if (!url) url = 'notify.wav';
@@ -808,9 +750,12 @@ const uiHelper = (function() {
       }
     },
     enableTheme: (index) => {
+      // The catboat-style skin in aero.css is the default look: it only applies
+      // while `aero` is on <html>, so picking a classic theme takes it off.
+      document.documentElement.classList.toggle('aero', index === -1);
       // If theme is -1, the user selected the default theme.
       if (index === -1) {
-        self.elements.themeColorMeta.attr('content', null);
+        self.elements.themeColorMeta.attr('content', '#fdf9f1');
       } else {
         if (!(index in self.themes)) {
           return console.warn(`Tried to enable invalid theme "${index}"`);

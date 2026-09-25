@@ -1,0 +1,902 @@
+/*//////////////////////////*\
+| Catboat "Aero" skin
+|
+| Ports the visual language of the catboat project (warm paper, brass and
+| bordeaux, glossy "gel" controls, beveled panels) onto the default pxls UI.
+|
+| Every rule is scoped to `html.aero`, which is set in the markup and removed
+| by uiHelper when the user picks one of the classic themes, so the existing
+| themes keep rendering exactly as before.
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero {
+    /* catboat palette */
+    --ct-nuit: #2a1c14;
+    --ct-brun: #4a3428;
+    --ct-brun-pale: #6b4a37;
+    --ct-papier: #fdf9f1;
+    --ct-creme: #fff8e4;
+    --ct-laiton: #eab953;
+    --ct-laiton-clair: #ffe9b4;
+    --ct-laiton-fonce: #c98f28;
+    --ct-bordeaux: #8f2d3f;
+    --ct-bordeaux-fonce: #661f2c;
+    --ct-jade: #1f6b53;
+    --ct-bleu: #244aa4;
+
+    --ct-bord: #c8b596;
+    --ct-bord-doux: #cbb99e;
+    --ct-bord-creux: #cdbb9f;
+
+    /* surfaces */
+    --ct-raye: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0 1px, rgba(120, 92, 62, 0.04) 1px 2px);
+    --ct-surface-soulevee: var(--ct-raye), linear-gradient(180deg, #fdfaf3 0%, #f6eddd 44%, #ebe0cb 100%);
+    --ct-surface-chrome: var(--ct-raye), linear-gradient(180deg, #fdfaf3 0%, #f4ebda 58%, #e9dec8 100%);
+    --ct-surface-creuse: rgba(244, 236, 222, 0.88);
+    --ct-surface-pastille: linear-gradient(180deg, #fffdf8 0%, #f2e8d7 100%);
+    --ct-surface-sombre: linear-gradient(180deg, var(--ct-brun) 0%, var(--ct-nuit) 100%);
+    /* highlight cap of a .gel control, stacked over its own gradient */
+    --ct-gel-cap: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 46%);
+    --ct-gel-cap-pale: linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0) 46%);
+
+    /* shadows */
+    --ct-ombre-carte: 0 1px 2px rgba(42, 28, 20, 0.1), 0 6px 16px rgba(42, 28, 20, 0.1);
+    --ct-ombre-carte-levee: 0 2px 4px rgba(42, 28, 20, 0.12), 0 12px 26px rgba(42, 28, 20, 0.14);
+    --ct-ombre-sombre: 0 2px 4px rgba(0, 0, 0, 0.16), 0 10px 26px rgba(0, 0, 0, 0.24);
+    --ct-ombre-pastille: 0 1px 2px rgba(42, 28, 20, 0.08), 0 4px 10px rgba(42, 28, 20, 0.08);
+    --ct-ombre-pastille-levee: 0 2px 4px rgba(42, 28, 20, 0.1), 0 8px 18px rgba(42, 28, 20, 0.12);
+    --ct-biseau: inset 0 1px 0 #ffffff, inset 0 -1px 0 rgba(255, 255, 255, 0.7);
+    --ct-creux: inset 0 2px 5px rgba(42, 28, 20, 0.16);
+
+    /* type */
+    --ct-police: 'Mulish', 'Segoe UI', system-ui, sans-serif;
+    --ct-police-titre: 'Gabarito', 'Segoe UI', system-ui, sans-serif;
+    --ct-police-mono: 'IBM Plex Mono', 'Consolas', monospace;
+
+    /*//// pxls theme variables ////*/
+
+    --general-text-color: var(--ct-nuit);
+    --general-background:
+        radial-gradient(circle at 18% 8%, rgba(234, 185, 83, 0.1), transparent 30rem),
+        radial-gradient(circle at 84% 34%, rgba(143, 45, 63, 0.05), transparent 34rem),
+        var(--ct-papier);
+
+    --kbd-background: linear-gradient(180deg, #fffdf8 0%, #eee2cc 100%);
+    --kbd-border-color: var(--ct-bord-doux);
+    --kbd-text-color: var(--ct-nuit);
+
+    --button-background: var(--ct-surface-pastille);
+    --button-border-color: var(--ct-bord-doux);
+    --button-text-color: var(--ct-nuit);
+    --button-text-color-disabled: #827466;
+    --button-border-color-disabled: #c4b69f;
+    --button-background-disabled: #eee8dc;
+    --button-text-color-hover: var(--ct-nuit);
+    --button-border-color-hover: #cf9832;
+    --button-background-hover: linear-gradient(180deg, #ffffff 0%, #fff3da 48%, #f5dfae 100%);
+
+    --dangerous-button-text-color: #fff6ea;
+    --dangerous-button-background: linear-gradient(180deg, #b7455a 0%, var(--ct-bordeaux) 52%, var(--ct-bordeaux-fonce) 100%);
+    --dangerous-button-border-color: #6f1f30;
+    --dangerous-button-text-color-hover: #fff6ea;
+    --dangerous-button-background-hover: linear-gradient(180deg, #c9556c 0%, #9c3244 52%, #741f2f 100%);
+    --dangerous-button-border-color-hover: #581824;
+
+    --floating-panel-text-color: var(--ct-nuit);
+    --floating-panel-border-color: var(--ct-bord);
+    --floating-panel-background: var(--ct-surface-soulevee);
+
+    --bubble-background: linear-gradient(158deg, rgba(52, 31, 23, 0.95) 0%, rgba(92, 37, 48, 0.93) 46%, rgba(128, 44, 57, 0.92) 100%);
+    --bubble-text-color: #fffaf2;
+    --bubble-button-background: none;
+    --bubble-button-background-hover: rgba(255, 233, 180, 0.18);
+    --bubble-border-color: rgba(255, 255, 255, 0.34);
+    --bubble-plusone-color: var(--ct-laiton-clair);
+
+    --palette-background: var(--ct-surface-chrome);
+    --palette-item-border-color: rgba(42, 28, 20, 0.55);
+    --palette-overlay-background: rgba(253, 249, 241, 0.94);
+    --palette-overlay-text-color: var(--ct-nuit);
+    --palette-deselect-button-color: var(--ct-bordeaux);
+    --palette-number-text-color: #33200a;
+    --palette-number-background-color: var(--ct-laiton-clair);
+
+    --cursor-text-color: var(--ct-nuit);
+    --cursor-text-background-color: var(--ct-creme);
+
+    --selection-color: #fff6ea;
+    --selection-background-color: var(--ct-bordeaux);
+
+    --undo-text-color: var(--ct-nuit);
+    --undo-background: linear-gradient(to top, rgba(253, 250, 243, 0.86), #fdfaf3);
+    --undo-border-color: var(--ct-bord);
+
+    --input-text-color: var(--ct-nuit);
+    --input-background: #fffdf8;
+    --input-border-color: #bda98d;
+    --input-placeholder-text-color: #a08a72;
+
+    --text-blue-color: var(--ct-bleu);
+    --text-green-color: var(--ct-jade);
+    --text-red-color: var(--ct-bordeaux);
+    --text-muted-color: var(--ct-brun-pale);
+    --text-yellow-color: #a5761a;
+    --text-orange-color: #c06a12;
+
+    --copypulse-color: var(--ct-laiton-fonce);
+    --error-color: var(--ct-bordeaux);
+    --notification-color: var(--ct-bordeaux);
+    --ping-highlight-color: #fff2d6;
+    --ping-flash-color: #d8f0e2;
+    --ping-counter-color: var(--ct-laiton-fonce);
+    --reply-highlight-color: #f7e7cd;
+    --notification-expiry-color: #a8635f;
+
+    --panel-background: var(--ct-papier);
+    --panel-text-color: var(--ct-nuit);
+    --panel-border-color: var(--ct-bord);
+    --panel-header-text-color: var(--ct-creme);
+    --panel-header-background: var(--ct-surface-sombre);
+    --panel-footer-text-color: var(--ct-brun-pale);
+    --panel-footer-background: rgba(244, 236, 222, 0.88);
+    --panel-close-button-color: var(--ct-laiton-clair);
+    --panel-close-button-color-hover: #ffffff;
+    --panel-close-button-color-active: var(--ct-laiton);
+
+    --panel-article-background: transparent;
+    --panel-article-text-color: var(--ct-nuit);
+    --panel-article-border-color: var(--ct-bord);
+    --panel-article-header-text-color: var(--ct-brun-pale);
+    --panel-article-header-background: transparent;
+    --panel-article-footer-text-color: var(--ct-brun-pale);
+    --panel-article-footer-background: rgba(244, 236, 222, 0.7);
+
+    --panel-trigger-outline-color: transparent;
+
+    --chat-separator-color: rgba(110, 80, 55, 0.16);
+    --chat-odd-background: rgba(244, 236, 222, 0.55);
+    --chat-abbr-underline-color: #b8a68c;
+    --chat-badge-background: linear-gradient(180deg, var(--ct-laiton-clair) 0%, var(--ct-laiton) 100%);
+    --chat-badge-text-color: #4d3407;
+    --chat-mention-text-color: var(--ct-bordeaux);
+    --chat-server-action-text-color: var(--ct-brun-pale);
+    --chat-user-text-shadow-color: rgba(255, 255, 255, 0.85);
+    --chat-purged-text-color: #97887a;
+    --chat-shadowbanned-text-color: #b7455a;
+
+    --chat-tobottom-text-color: #fff6ea;
+    --chat-tobottom-background: var(--ct-surface-sombre);
+    --chat-tobottom-text-color-hover: var(--ct-laiton-clair);
+    --chat-tobottom-background-hover: linear-gradient(180deg, #5c4233 0%, #3a271c 100%);
+
+    --chat-typeahead-menu-background: var(--ct-surface-soulevee);
+    --chat-typeahead-item-text-color: var(--ct-nuit);
+    --chat-typeahead-item-background: transparent;
+    --chat-typeahead-item-background-hover: rgba(234, 185, 83, 0.24);
+    --chat-typeahead-item-background-active: rgba(234, 185, 83, 0.42);
+
+    --emoji-picker-border-color: var(--ct-bord);
+    --emoji-picker-background: var(--ct-papier);
+    --emoji-picker-preview-name-text-color: var(--ct-nuit);
+    --emoji-picker-tab-icon-color: var(--ct-brun-pale);
+    --emoji-picker-tab-icon-color-selected: var(--ct-bordeaux);
+    --emoji-picker-section-text-color: var(--ct-brun);
+    --emoji-picker-emoji-background-hover: rgba(234, 185, 83, 0.28);
+    --emoji-picker-search-input-border-color: #bda98d;
+    --emoji-picker-search-input-border-color-focus: var(--ct-bordeaux);
+    --emoji-picker-search-input-background: #fffdf8;
+    --emoji-picker-search-input-text-color: var(--ct-nuit);
+    --emoji-picker-search-icon-color: #a08a72;
+    --emoji-picker-search-no-results-color: var(--ct-brun-pale);
+    --emoji-picker-variant-overlay-background: rgba(42, 28, 20, 0.65);
+    --emoji-picker-variant-popup-background: var(--ct-papier);
+
+    accent-color: var(--ct-bordeaux);
+}
+
+/*//////////////////////////*\
+| Typography
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero,
+html.aero body {
+    font-family: var(--ct-police);
+}
+
+html.aero input,
+html.aero button,
+html.aero textarea,
+html.aero select {
+    font-family: inherit;
+}
+
+html.aero h1,
+html.aero h2,
+html.aero h3,
+html.aero h4,
+html.aero h5,
+html.aero h6 {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+html.aero ::selection {
+    color: var(--selection-color);
+    background-color: var(--selection-background-color);
+}
+
+html.aero a,
+html.aero .link {
+    color: var(--ct-bordeaux);
+    text-decoration: none;
+}
+
+html.aero a:hover,
+html.aero .link:hover {
+    color: var(--ct-bordeaux-fonce);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+html.aero :focus-visible {
+    outline: 3px solid var(--ct-bordeaux);
+    outline-offset: 2px;
+}
+
+html.aero hr {
+    border: none;
+    border-top: 1px solid rgba(110, 80, 55, 0.24);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+html.aero kbd {
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-family: var(--ct-police-mono);
+    font-weight: 600;
+    border: 1px solid var(--kbd-border-color);
+    box-shadow: inset 0 1px 0 #ffffff, 0 1px 0 rgba(42, 28, 20, 0.2);
+}
+
+/* numbers read as instrument readouts, like catboat's gauges */
+html.aero #cooldown-timer,
+html.aero #placeable-count,
+html.aero #online-count,
+html.aero .coords,
+html.aero #cursor-text,
+html.aero .palette-number {
+    font-family: var(--ct-police-mono);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/*//////////////////////////*\
+| Top controls
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero header.controls > .left,
+html.aero header.controls > .right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+html.aero .panel-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--ct-brun);
+    text-shadow: none;
+    border-radius: 50%;
+    border: 1px solid var(--ct-bord-doux);
+    /* the gloss cap of catboat's .gel buttons, as a background layer so it
+       never paints over the icon */
+    background: var(--ct-gel-cap), var(--ct-surface-pastille);
+    box-shadow: inset 0 1px 0 #ffffff, var(--ct-ombre-pastille);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+}
+
+html.aero .panel-trigger:hover,
+html.aero #lock-button:hover {
+    color: var(--ct-bordeaux);
+    background: var(--ct-gel-cap), linear-gradient(180deg, #ffffff 0%, #fff3da 48%, #f5dfae 100%);
+    border-color: #cf9832;
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 #ffffff, var(--ct-ombre-pastille-levee);
+}
+
+html.aero .panel-trigger:active {
+    color: var(--ct-bordeaux-fonce);
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 5px rgba(42, 28, 20, 0.24);
+}
+
+html.aero .panel-trigger.has-ping {
+    margin-left: 0;
+    border-color: var(--ct-laiton-fonce);
+    background: var(--ct-gel-cap), linear-gradient(180deg, var(--ct-laiton-clair) 0%, var(--ct-laiton) 100%);
+}
+
+html.aero .panel-trigger .ping-counter {
+    bottom: auto;
+    left: auto;
+    top: -3px;
+    right: -3px;
+    transform: none;
+    font-size: 0.6rem;
+    color: #fff6ea;
+    background: var(--ct-bordeaux);
+    border: 1px solid #fffdf8;
+    border-radius: 999px;
+    box-shadow: 0 1px 3px rgba(42, 28, 20, 0.35);
+}
+
+html.aero .panel-trigger .has-notification,
+html.aero i.fas.has-notification,
+html.aero i.far.has-notification {
+    color: var(--ct-bordeaux);
+}
+
+/*//////////////////////////*\
+| Bubbles
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero #ui .bubble {
+    border-radius: 18px;
+    outline: 0;
+    border: 1px solid var(--bubble-border-color);
+    box-shadow: var(--ct-ombre-sombre), inset 0 1px 0 rgba(255, 255, 255, 0.42), inset 0 -1px 0 rgba(0, 0, 0, 0.28);
+}
+
+/* sheen across the top, as on catboat's .bulle-verre */
+html.aero #ui .bubble::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 46%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 55%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+html.aero #ui .bubble > * {
+    position: relative;
+    z-index: 1;
+}
+
+html.aero #main-bubble a {
+    color: var(--ct-laiton-clair);
+}
+
+html.aero #main-bubble .lable,
+html.aero #main-bubble #online-count {
+    color: rgba(255, 246, 235, 0.72);
+}
+
+html.aero #main-bubble #setting-ui-bubble-compact:hover {
+    background: var(--bubble-button-background-hover);
+}
+
+html.aero #ui #loading-bubble.bubble {
+    background: linear-gradient(180deg, #ffdf8c 0%, var(--ct-laiton) 50%, var(--ct-laiton-fonce) 100%);
+    color: #3d2609;
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+html.aero #cursor-text {
+    border: 1px solid var(--ct-bord-doux);
+    box-shadow: inset 0 1px 0 #ffffff, 0 2px 6px rgba(42, 28, 20, 0.28);
+}
+
+html.aero #reticule,
+html.aero #cursor {
+    border-color: var(--ct-nuit);
+}
+
+/*//////////////////////////*\
+| Palette
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero #palette {
+    border-top: 1px solid var(--ct-bord);
+    box-shadow: inset 0 1px 0 #ffffff, 0 -2px 12px rgba(42, 28, 20, 0.14);
+}
+
+html.aero #palette::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background-color: var(--ct-laiton-fonce);
+}
+
+html.aero #palette::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ct-bordeaux);
+}
+
+html.aero .thin-scrollbar {
+    scrollbar-color: var(--ct-laiton-fonce) transparent;
+}
+
+html.aero .palette-color {
+    border-width: 1px;
+    border-radius: 7px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+        0 2px 5px rgba(42, 28, 20, 0.22);
+    transition: bottom 0.14s ease, box-shadow 0.14s ease;
+}
+
+/* glossy cap on every chip. `background-image` only: place.js sets each chip's
+   `background-color` inline, and .checkerboard-background owns its own image. */
+html.aero .palette-color:not(.checkerboard-background) {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 46%);
+}
+
+html.aero .palette-button.active > .palette-color,
+html.aero .palette-button.no-touch:hover > .palette-color {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+        0 8px 16px rgba(42, 28, 20, 0.3);
+}
+
+html.aero .palette-button.active > .palette-color {
+    border-color: var(--ct-bordeaux);
+}
+
+html.aero .palette-number {
+    border: 1px solid var(--ct-laiton-fonce);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 3px rgba(42, 28, 20, 0.28);
+}
+
+html.aero .palette-overlay {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    backdrop-filter: blur(3px);
+}
+
+html.aero #login-overlay > #legal {
+    font-weight: 600;
+}
+
+html.aero #undo {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+}
+
+html.aero #undo.open {
+    box-shadow: inset 0 1px 0 #ffffff;
+}
+
+/*//////////////////////////*\
+| Panels
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero .panel {
+    box-shadow: var(--ct-ombre-sombre);
+}
+
+html.aero .panel-header {
+    /* catboat's .titre-plaque */
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ct-nuit);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+html.aero .panel-header h1,
+html.aero .panel-header h2,
+html.aero .panel-header h3,
+html.aero .panel-header h4,
+html.aero .panel-header h5,
+html.aero .panel-header h6 {
+    font-size: 0.86rem;
+    letter-spacing: inherit;
+}
+
+html.aero .panel-header button {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+html.aero .panel-closer {
+    margin-top: 0;
+    align-self: center;
+}
+
+html.aero .panel-body article:not(.naked) {
+    /* catboat's .cadre: a hairline frame lit from above */
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 100%);
+    box-shadow: inset 0 1px 0 #ffffff, 0 2px 0 rgba(255, 255, 255, 0.6), var(--ct-ombre-pastille);
+}
+
+html.aero .panel-body article:not(.naked) > header {
+    border-bottom: 1px solid rgba(110, 80, 55, 0.2);
+}
+
+html.aero .panel-body article > header h1,
+html.aero .panel-body article > header h2,
+html.aero .panel-body article > header h3,
+html.aero .panel-body article > header h4,
+html.aero .panel-body article > header h5,
+html.aero .panel-body article > header h6 {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ct-brun-pale);
+    padding: 0.5rem 0;
+}
+
+html.aero .panel-body article:not(.naked) > footer {
+    font-weight: 600;
+    font-size: 0.8rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+html.aero .panel-body article section > h4 {
+    font-family: var(--ct-police-titre);
+    font-size: 0.95rem;
+}
+
+html.aero .floating-panel {
+    border-radius: 14px;
+    box-shadow: var(--ct-biseau), var(--ct-ombre-carte-levee);
+}
+
+/*//////////////////////////*\
+| Buttons
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero button.text-button {
+    /* catboat's .gel */
+    position: relative;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: -0.01em;
+    background: var(--ct-gel-cap), var(--ct-surface-pastille);
+    box-shadow: inset 0 1px 0 #ffffff, var(--ct-ombre-pastille);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+}
+
+html.aero button.text-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: var(--ct-gel-cap), linear-gradient(180deg, #ffffff 0%, #fff3da 48%, #f5dfae 100%);
+    box-shadow: inset 0 1px 0 #ffffff, 0 9px 20px rgba(180, 130, 40, 0.3);
+}
+
+html.aero button.text-button:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 5px rgba(42, 28, 20, 0.28);
+}
+
+html.aero button.text-button:disabled {
+    background: var(--button-background-disabled);
+    box-shadow: none;
+}
+
+/* dangerous buttons carry .text-button too, so these come last on purpose */
+html.aero button.dangerous-button {
+    color: var(--dangerous-button-text-color);
+    background: var(--ct-gel-cap-pale), var(--dangerous-button-background);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -3px 8px rgba(0, 0, 0, 0.2), var(--ct-ombre-pastille);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+html.aero button.dangerous-button:hover:not(:disabled) {
+    background: var(--ct-gel-cap-pale), var(--dangerous-button-background-hover);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -3px 8px rgba(0, 0, 0, 0.2), 0 9px 20px rgba(143, 45, 63, 0.32);
+}
+
+html.aero .button-bar > button {
+    border-radius: 0;
+}
+
+html.aero .button-bar > button:hover:not(:disabled),
+html.aero .button-bar > button:active:not(:disabled) {
+    transform: none;
+}
+
+html.aero .button-bar > button:first-child {
+    border-top-left-radius: 999px;
+    border-bottom-left-radius: 999px;
+    padding-left: 14px;
+}
+
+html.aero .button-bar > button:last-child {
+    border-top-right-radius: 999px;
+    border-bottom-right-radius: 999px;
+    padding-right: 14px;
+}
+
+/*//////////////////////////*\
+| Form controls
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero input[type="text"],
+html.aero input[type="search"],
+html.aero input[type="number"],
+html.aero textarea,
+html.aero select {
+    /* catboat's .champ */
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-weight: 600;
+    box-shadow: var(--ct-creux), 0 1px 0 #ffffff;
+    outline: none;
+}
+
+html.aero input[type="text"]:focus,
+html.aero input[type="search"]:focus,
+html.aero input[type="number"]:focus,
+html.aero textarea:focus,
+html.aero select:focus {
+    border-color: var(--ct-bordeaux);
+    box-shadow: var(--ct-creux), 0 0 0 3px rgba(143, 45, 63, 0.22);
+}
+
+html.aero select {
+    cursor: pointer;
+    box-shadow: var(--ct-biseau), var(--ct-ombre-pastille);
+    background: var(--ct-surface-pastille);
+}
+
+html.aero input:disabled,
+html.aero button:disabled,
+html.aero select:disabled {
+    box-shadow: none;
+}
+
+html.aero input[type="range"] {
+    accent-color: var(--ct-bordeaux);
+}
+
+html.aero #settings-search-input {
+    border-radius: 999px;
+}
+
+/*//////////////////////////*\
+| Chat
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero .chat-wrapper ul.chat-body {
+    font-family: var(--ct-police);
+}
+
+html.aero ul.chat-body li.chat-line {
+    line-height: 1.55em;
+}
+
+html.aero li.chat-line .user,
+html.aero #reply-label-username .user {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+}
+
+html.aero .text-badge {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--ct-laiton-fonce);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+html.aero header .text-badge {
+    background: var(--ct-surface-pastille);
+    border-color: var(--ct-bord-doux);
+    color: var(--ct-brun);
+}
+
+html.aero .chat-wrapper .chat-controls textarea {
+    font-family: var(--ct-police);
+    border-radius: 12px;
+}
+
+html.aero .chat-wrapper .chat-hints {
+    border-radius: 10px;
+    color: var(--ct-laiton-fonce);
+    border: 1px solid var(--ct-bord-doux);
+    box-shadow: var(--ct-ombre-pastille);
+}
+
+html.aero #jump-to-bottom {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    border-radius: 10px 10px 0 0;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+html.aero #emojiPanelTrigger {
+    color: var(--ct-brun-pale);
+}
+
+html.aero #emojiPanelTrigger:hover {
+    color: var(--ct-bordeaux);
+}
+
+html.aero #typeahead ul {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--ct-bord);
+    box-shadow: var(--ct-biseau), var(--ct-ombre-carte);
+}
+
+html.aero #typeahead ul li button {
+    font-weight: 600;
+}
+
+html.aero .chat-ratelimit-overlay {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    background-color: rgba(42, 28, 20, 0.62);
+    backdrop-filter: blur(2px);
+}
+
+html.aero .reply-preview {
+    border-left: 3px solid var(--ct-laiton);
+}
+
+/*//////////////////////////*\
+| Overlays: popups, modals, notices
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+html.aero .popup {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--ct-bord);
+    box-shadow: var(--ct-biseau), var(--ct-ombre-sombre);
+}
+
+html.aero .popup-timestamp-header {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ct-brun-pale);
+}
+
+html.aero .blocker {
+    background: radial-gradient(circle at 50% 15%, rgba(55, 40, 30, 0.7), rgba(22, 15, 14, 0.88));
+    backdrop-filter: blur(4px);
+}
+
+html.aero .modal {
+    border-radius: 16px;
+    border: 1px solid #8e795f;
+    background:
+        linear-gradient(130deg, rgba(255, 255, 255, 0.6), transparent 35%),
+        linear-gradient(180deg, #fbf5ea 0%, #eee0ca 100%);
+    color: var(--ct-nuit);
+    box-shadow: inset 0 1px 0 #ffffff, 0 26px 70px rgba(0, 0, 0, 0.45);
+}
+
+html.aero .modal .modal-header {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    padding: 0.75rem 1rem;
+    background: var(--ct-surface-sombre);
+    color: var(--ct-creme);
+}
+
+html.aero .modal .modal-footer {
+    padding: 0.5rem 1rem;
+    background: rgba(244, 236, 222, 0.8);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+html.aero .modal-title {
+    font-family: var(--ct-police-titre);
+}
+
+html.aero .notification {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--ct-bord);
+    background: var(--ct-surface-soulevee);
+    box-shadow: var(--ct-biseau), var(--ct-ombre-carte);
+}
+
+html.aero .notification-footer {
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: var(--ct-brun-pale);
+}
+
+html.aero .popup .pings-list li,
+html.aero #chat-select-username-color {
+    font-family: var(--ct-police-mono);
+}
+
+/* SLIDEIN notices: same lacquered bars, catboat's palette */
+html.aero .slidein {
+    border-radius: 0 0 14px 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 18px rgba(42, 28, 20, 0.28);
+}
+
+html.aero .slidein.slidein-success {
+    background: linear-gradient(180deg, #3fa37a 0%, var(--ct-jade) 100%);
+    color: #f2fbf7;
+}
+
+html.aero .slidein.slidein-danger {
+    background: linear-gradient(180deg, #b7455a 0%, var(--ct-bordeaux) 52%, var(--ct-bordeaux-fonce) 100%);
+    color: #fff6ea;
+}
+
+html.aero .slidein.slidein-warning {
+    background: linear-gradient(180deg, #ffdf8c 0%, var(--ct-laiton) 50%, var(--ct-laiton-fonce) 100%);
+    color: #3d2609;
+}
+
+html.aero .slidein.slidein-info {
+    background: linear-gradient(180deg, #3a6bc9 0%, var(--ct-bleu) 100%);
+    color: #f1f5ff;
+}
+
+html.aero #reconnecting {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+    background: linear-gradient(180deg, #b7455a 0%, var(--ct-bordeaux) 52%, var(--ct-bordeaux-fonce) 100%);
+    color: #fff6ea;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px rgba(42, 28, 20, 0.3);
+}
+
+html.aero #loading span {
+    font-family: var(--ct-police-titre);
+    font-weight: 800;
+}
+
+html.aero #drag-drop-target {
+    background: rgba(42, 28, 20, 0.62);
+}
+
+html.aero #drag-drop {
+    border-radius: 18px;
+    border: 2px dashed var(--ct-laiton);
+    background: var(--ct-surface-soulevee);
+    color: var(--ct-nuit);
+}
+
+/*//////////////////////////*\
+| Motion
+\*\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+@media (prefers-reduced-motion: reduce) {
+    html.aero .panel-trigger,
+    html.aero button.text-button,
+    html.aero .palette-color {
+        transition: none;
+    }
+
+    html.aero .panel-trigger:hover,
+    html.aero button.text-button:hover:not(:disabled) {
+        transform: none;
+    }
+}
+
+/* the glossy caps rely on shadows that get muddy on small screens */
+@media (max-width: 620px) {
+    html.aero .panel-trigger {
+        box-shadow: inset 0 1px 0 #ffffff, 0 2px 6px rgba(42, 28, 20, 0.14);
+    }
+
+    html.aero button.text-button {
+        box-shadow: inset 0 1px 0 #ffffff, 0 2px 6px rgba(42, 28, 20, 0.14);
+    }
+}

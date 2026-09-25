@@ -20,15 +20,26 @@
                 window.close();
             }
         } else {
-            localStorage.setItem('auth_respond', JSON.stringify({
+            const respond = {
                 signup: queryParams["signup"] === "true",
                 token: queryParams["token"]
-            }));
+            };
             if (localStorage.getItem('auth_same_window') != null) {
+                localStorage.setItem('auth_respond', JSON.stringify(respond));
                 localStorage.removeItem('auth_same_window');
                 localStorage.setItem('auth_proceed', 'true');
                 window.location = '/';
+            } else if (window.opener) {
+                // Hand the token straight to the tab that started the sign in.
+                // Going through localStorage would notify every open tab, and the
+                // first one to answer consumes the token, so the tab the user is
+                // actually looking at ends up with nothing.
+                window.opener.postMessage({ type: 'pxls-auth-respond', ...respond }, location.origin);
+                window.close();
             } else {
+                // No opener to talk to (popup opened standalone): fall back to the
+                // storage relay.
+                localStorage.setItem('auth_respond', JSON.stringify(respond));
                 localStorage.setItem('auth', (new Date()).toString());
                 window.close();
             }

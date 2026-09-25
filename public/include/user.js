@@ -59,6 +59,12 @@ const user = (function() {
         return;
       }
       ls.remove('auth_respond');
+      self.handleAuthResponse(data);
+    },
+    handleAuthResponse: function(data) {
+      if (!data || !data.token) {
+        return;
+      }
       if (data.signup) {
         self.pendingSignupToken = data.token;
         self.elements.signup.fadeIn(200);
@@ -144,13 +150,11 @@ const user = (function() {
         url: '/signup',
         data: {
           token: self.pendingSignupToken,
-          username: self.elements.signup.find('#signup-username-input').val(),
-          discord: self.elements.signup.find('#signup-discord-input').val()
+          username: self.elements.signup.find('#signup-username-input').val()
         },
         success: function() {
           self.elements.signup.find('#error').text('');
           self.elements.signup.find('#signup-username-input').val('');
-          self.elements.signup.find('#signup-discord-input').val('');
           self.elements.signup.fadeOut(200);
           socket.reconnectSocket();
           self.pendingSignupToken = null;
@@ -219,6 +223,14 @@ const user = (function() {
             )
           )
         ));
+      });
+      // The sign in popup hands its token to this exact tab, so no other tab can
+      // race us for it. The storage listener below stays as a fallback.
+      window.addEventListener('message', function(evt) {
+        if (evt.origin !== window.location.origin) return;
+        const data = evt.data;
+        if (!data || data.type !== 'pxls-auth-respond') return;
+        self.handleAuthResponse(data);
       });
       $(window).bind('storage', function(evt) {
         if (evt.originalEvent.key === 'auth') {

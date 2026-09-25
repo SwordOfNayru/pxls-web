@@ -1,0 +1,12 @@
+*
+!package.json
+!package-lock.json
+!gulpfile.js
+!index.js
+!utils.js
+!scripts/
+!public/
+!views/
+!po/
+!.eslintrc
+!docker-entrypoint.sh

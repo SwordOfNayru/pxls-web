@@ -480,12 +480,6 @@ dt {
     z-index: 99;
 }
 
-#signup-discord-input {
-    display: block;
-    width: 100%;
-    margin-top: 5px;
-}
-
 #messages {
     position: fixed;
     z-index: 22;
